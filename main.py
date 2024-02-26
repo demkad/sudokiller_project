@@ -14,6 +14,19 @@ puzzle = [
     [0,0,3,0,2,1,0,0,0]
 ]
 
+class sudoku:
+    def __init__(self,raster):
+        self.raster = raster
+    
+    def toon_raster(self):
+        for rij in self.raster:
+            print(rij)
+    
+
+
+
+
 # Playground
-for rij in puzzle:
-    print(f"{rij}")
+raadsel = sudoku(puzzle)
+
+raadsel.toon_raster()
