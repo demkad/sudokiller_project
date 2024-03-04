@@ -17,16 +17,37 @@ puzzle = [
 class sudoku:
     def __init__(self,raster):
         self.raster = raster
+        self.grootte = len(raster)
+        self.leeg = 0
+
+    def rijen(self):
+        for i in range(1,10):
+            print(f"rij {i}:\n {self.raster[i-1]}")
+
+    def kolommen(self):
+        for i in range(1,10):
+            print(f"kolom {i-1}:\n")
+            for j in range(1,10):
+                kolom = self.raster[j-1][i-1]
+                print(f"{kolom}")
+
+
+
+
+
+
+
     
-    def toon_raster(self):
-        for rij in self.raster:
-            print(rij)
-    
 
 
 
 
-# Playground
+
 raadsel = sudoku(puzzle)
 
-raadsel.toon_raster()
+raadsel.kolommen()
+
+
+
+
+
