@@ -1,4 +1,4 @@
-# bu son degisiklik
+# Su is een voorbeeld
 su= {
     'A1': '', 'B1': '', 'C1': '', 'D1': '', 'E1': '', 'F1': '', 'G1': '', 'H1': '', 'I1': '',
     'A2': '', 'B2': '', 'C2': '', 'D2': '', 'E2': '', 'F2': '', 'G2': '', 'H2': '', 'I2': '',
@@ -11,8 +11,8 @@ su= {
     'A9': '', 'B9': '', 'C9': '', 'D9': '', 'E9': '', 'F9': '', 'G9': '', 'H9': '', 'I9': ''
     }
 
-# Invoer 4,6,9,12
-#invoer = int(input("Kies de maat van u sudoku (2: 2x2) (9: 9x9): "))
+
+#invoer = int(input("Kies de maat van u sudoku (4:4x4),(6:6x6),(9:9x9),(12:12x12): "))
 invoer = 9
 
 # Opslag
@@ -28,7 +28,8 @@ for digit in list_digit[0:invoer]:
     for alfa in list_alfa[0:invoer]:
         sudoku[alfa+digit] = ''
 
-# Combinaties
+# Aanmaak kolommen,rijen en kamers per cel
+# Aanmaak kolom
 for i in sudoku:
     if i[1] == "2": # Stopt de programma als alle kolommen overlopen is (voor optimalisatie van de programma)
         break 
@@ -40,7 +41,7 @@ for i in sudoku:
                 var[cel] = waarde
         kolom[i[0]] = var
         # Output: {'A': {'A1': '', 'A2': '', 'A3': '', 'A4': ''}, 'B': {'B1': '', 'B2': '', 'B3': '', 'B4': ''}, 'C': {'C1': '', 'C2': '', 'C3': '', 'C4': ''}, 'D': {'D1': '', 'D2': '', 'D3': '', 'D4': ''}}
-
+# Aanmaak rij
 for i in sudoku:
     var = {}
     for cel,waarde in sudoku.items():
@@ -49,39 +50,24 @@ for i in sudoku:
             var[cel] = waarde
     rij[i[1]] = var
     # Output: {'1': {'A1': '', 'B1': '', 'C1': '', 'D1': ''}, '2': {'A2': '', 'B2': '', 'C2': '', 'D2': ''}, '3': {'A3': '', 'B3': '', 'C3': '', 'D3': ''}, '4': {'A4': '', 'B4': '', 'C4': '', 'D4': ''}}
-
-
-
-
-var = {}
+# Aanmaak kamers
+my_dict = {}
+deel = 3
 for cel,waarde in sudoku.items():
     index_kolom = list_alfa.index(cel[0])
     index_rij = list_digit.index(cel[1])
-    kamer_kolom = index_kolom // 3
-    kamer_rij = index_rij // 3
-    for i in range(0,3):
-        for x in range(0,3):
+    kamer_kolom = index_kolom // deel
+    kamer_rij = index_rij // deel
+    for i in range(0,deel):
+        for x in range(0,deel):
             if (kamer_kolom == x) and (kamer_rij == i):
-                kamer = (i*3)+x
-                print(cel,kamer)
-
-
-
-
-    # print(f"cel: {cel} \nrij: {index_rij,kamer_rij} \nkolom: {index_kolom,kamer_kolom}")
-
-
-"""for i in su:
-    var = {}
-    for cel,waarde in su.items():
-        if i[0] == cel[0]:
-            var[cel] = waarde
-    combinatie_v[i] = var
-
-for i in su:
-    var = {}
-    for cel,waarde in su.items():
-        if i[1] == cel[1]:
-            var[cel] = waarde
-    combinatie_h[i] = var
-"""
+                kamer_id = (i*deel)+x
+                if kamer_id in my_dict:
+                    my_dict[kamer_id][cel] = waarde
+                else:
+                    my_dict[kamer_id] = {cel:waarde}
+    # ---- Tot hier zijn de wellen per kamers verdeeld ----
+for cel in sudoku:    
+    for nest in my_dict.values():
+        if cel in nest:
+            kamer[cel]=nest 
