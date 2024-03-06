@@ -13,15 +13,12 @@ body {
     width: 260px;
     background-color: red;
 }
+
 .sudoku {
     width: 340px; /* Adjusted width */
     margin: 0 auto;
     padding: 10px;
     border: 2px solid #333;
-}
-
-.square {
-    display: inline-block;
 }
 
 .row {
@@ -40,4 +37,12 @@ body {
 .cell:focus {
     outline: none;
     border-color: #007bff;
+}
+
+.divider {
+    border: 2px solid black;
+}
+
+.dividerfat {
+    border: 5px solid black;
 }
