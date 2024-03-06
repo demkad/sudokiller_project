@@ -1,52 +1,43 @@
-html {
-    font-size: 16px;
-}
 body {
-    font-family: Open Sans, sans-serif;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
 }
 
-* {
-    box-sizing: border-box;
+.mainframe{
+    display: flex;
+    width: 600px;
+    background-color: grey;
 }
 
-
-p {
-    margin: 0;
+.menu {
+    width: 260px;
+    background-color: red;
+}
+.sudoku {
+    width: 340px; /* Adjusted width */
+    margin: 0 auto;
+    padding: 10px;
+    border: 2px solid #333;
 }
 
-.creators {
+.square {
+    display: inline-block;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    margin: 1px;
     text-align: center;
+    font-size: 16px;
+    border: 1px solid #999;
 }
 
-.Titel {
-    border: 2px solid black;
-    width: 500px;
-    margin: 20px auto;
-    padding: 0 7px;
+.cell:focus {
+    outline: none;
+    border-color: #007bff;
 }
-
-.Puzzle {
-    border: 2px solid black;
-    margin-top: 100px;
-    margin-left: 100px;
-    width: 500px;
-    height: 500px;
-}
-
-.Buttons {
-    border: 2px solid black;
-    margin-top: 100px;
-    margin-right: 700px;
-    width: 500px;
-    height: 500px;
-}
-
-h1 {
-    font-weight: 800;
-    text-align: center;
-    margin: -4px 0;
-
-}
-
-
-
