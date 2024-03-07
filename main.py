@@ -1,10 +1,10 @@
 # Su is een voorbeeld
-su= {
-    'A1': '', 'B1': '', 'C1': '', 'D1': '', 'E1': '', 'F1': '', 'G1': '', 'H1': '', 'I1': '',
+sudoku= {
+    'A1': '', 'B1': '', 'C1': '1', 'D1': '', 'E1': '', 'F1': '', 'G1': '', 'H1': '', 'I1': '',
     'A2': '', 'B2': '', 'C2': '', 'D2': '', 'E2': '', 'F2': '', 'G2': '', 'H2': '', 'I2': '',
     'A3': '', 'B3': '', 'C3': '', 'D3': '', 'E3': '', 'F3': '', 'G3': '', 'H3': '', 'I3': '',
     'A4': '', 'B4': '', 'C4': '', 'D4': '', 'E4': '', 'F4': '', 'G4': '', 'H4': '', 'I4': '',
-    'A5': '', 'B5': '', 'C5': '', 'D5': '', 'E5': '', 'F5': '', 'G5': '', 'H5': '', 'I5': '',
+    'A5': '2', 'B5': '', 'C5': '8', 'D5': '', 'E5': '', 'F5': '', 'G5': '', 'H5': '', 'I5': '',
     'A6': '', 'B6': '', 'C6': '', 'D6': '', 'E6': '', 'F6': '', 'G6': '', 'H6': '', 'I6': '',
     'A7': '', 'B7': '', 'C7': '', 'D7': '', 'E7': '', 'F7': '', 'G7': '', 'H7': '', 'I7': '',
     'A8': '', 'B8': '', 'C8': '', 'D8': '', 'E8': '', 'F8': '', 'G8': '', 'H8': '', 'I8': '',
@@ -16,7 +16,7 @@ su= {
 invoer = 9
 
 # Opslag
-sudoku= {}
+su= {}
 kolom = {}
 rij = {}
 kamer = {}
@@ -26,7 +26,7 @@ list_digit = ['1', '2', '3', '4', '5', '6', '7', '8', '9','10','11','12']
 # Aanmaak dict
 for digit in list_digit[0:invoer]:
     for alfa in list_alfa[0:invoer]:
-        sudoku[alfa+digit] = ''
+        su[alfa+digit] = '5'
 
 # Aanmaak kolommen,rijen en kamers per cel
 # Aanmaak kolom
@@ -71,3 +71,16 @@ for cel in sudoku:
     for nest in my_dict.values():
         if cel in nest:
             kamer[cel]=nest 
+
+
+
+# OPLOSSEN
+for cel,waarde in sudoku.items():
+    if waarde == "":
+        for i in range(1,invoer+1):
+            i = str(i)
+            if i in rij[cel[1]].values() or i in kolom[cel[0]].values() or i in kamer[cel].values():
+                None
+            else: sudoku[cel] = i
+            
+print(sudoku)
