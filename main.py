@@ -4,7 +4,7 @@ sudoku= {
     'A2': '', 'B2': '', 'C2': '', 'D2': '', 'E2': '', 'F2': '', 'G2': '', 'H2': '', 'I2': '',
     'A3': '', 'B3': '', 'C3': '', 'D3': '', 'E3': '', 'F3': '', 'G3': '', 'H3': '', 'I3': '',
     'A4': '', 'B4': '', 'C4': '', 'D4': '', 'E4': '', 'F4': '', 'G4': '', 'H4': '', 'I4': '',
-    'A5': '2', 'B5': '', 'C5': '8', 'D5': '', 'E5': '', 'F5': '', 'G5': '', 'H5': '', 'I5': '',
+    'A5': '2', 'B5': '', 'C5': '8', 'D5': '9', 'E5': '', 'F5': '', 'G5': '', 'H5': '', 'I5': '',
     'A6': '', 'B6': '', 'C6': '', 'D6': '', 'E6': '', 'F6': '', 'G6': '', 'H6': '', 'I6': '',
     'A7': '', 'B7': '', 'C7': '', 'D7': '', 'E7': '', 'F7': '', 'G7': '', 'H7': '', 'I7': '',
     'A8': '', 'B8': '', 'C8': '', 'D8': '', 'E8': '', 'F8': '', 'G8': '', 'H8': '', 'I8': '',
@@ -26,7 +26,7 @@ list_digit = ['1', '2', '3', '4', '5', '6', '7', '8', '9','10','11','12']
 # Aanmaak dict
 for digit in list_digit[0:invoer]:
     for alfa in list_alfa[0:invoer]:
-        su[alfa+digit] = '5'
+        su[alfa+digit] = ''
 
 # Aanmaak kolommen,rijen en kamers per cel
 # Aanmaak kolom
@@ -75,12 +75,46 @@ for cel in sudoku:
 
 
 # OPLOSSEN
-for cel,waarde in sudoku.items():
+
+
+def control_cel(num,functie_cel):
+    if num in rij[functie_cel[1]].values() or num in kolom[functie_cel[0]].values() or num in kamer[functie_cel].values():
+        return False
+    else: 
+        return True
+
+
+def oplosser():
+    for cel,waarde in sudoku.items():
+        if waarde == "":
+            for i in range(1,10):
+                i = str(i)
+                if control_cel(i,cel):
+                    sudoku[cel] = i
+                    break
+
+
+oplosser()
+print(sudoku)
+                
+
+
+
+
+
+
+"""for cel,waarde in sudoku.items():
     if waarde == "":
         for i in range(1,invoer+1):
             i = str(i)
             if i in rij[cel[1]].values() or i in kolom[cel[0]].values() or i in kamer[cel].values():
                 None
             else: sudoku[cel] = i
-            
-print(sudoku)
+
+for cel,waarde in sudoku.items():
+    if cel[1] == '5':
+        print(cel,waarde)"""
+
+"""print(rij["1"])
+print(kamer['A5'])
+print(kolom["B"])"""
