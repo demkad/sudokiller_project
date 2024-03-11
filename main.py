@@ -97,6 +97,7 @@ def oplosser():
 
 ## voor beter beeld op de sudoku te krijgen
 def print_sudoku(grid):
+    loop = 0
     grid_2d = []
     grid_rij = []
     for cel, waarde in grid.items():
@@ -104,8 +105,16 @@ def print_sudoku(grid):
         if len(grid_rij) == 9:
             grid_2d.append(grid_rij)
             grid_rij = [] 
+    
+
     for rij in grid_2d:
         print(rij)
+        loop += 1
+        if loop == 3:
+            print("jij noob lan")
+            loop = 0
+
+        
         
 
         
