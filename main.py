@@ -94,8 +94,24 @@ def oplosser():
                     break
 
 
+
+## voor beter beeld op de sudoku te krijgen
+def print_sudoku(grid):
+    grid_2d = []
+    grid_rij = []
+    for cel, waarde in grid.items():
+        grid_rij.append(waarde)
+        if len(grid_rij) == 9:
+            grid_2d.append(grid_rij)
+            grid_rij = [] 
+    for rij in grid_2d:
+        print(rij)
+        
+
+        
+
 oplosser()
-print(sudoku)
+print_sudoku(sudoku)
                 
 
 
