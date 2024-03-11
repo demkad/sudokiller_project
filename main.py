@@ -106,6 +106,10 @@ def print_sudoku(grid):
             grid_rij = [] 
     for rij in grid_2d:
         print(rij)
+
+
+
+print("noob")
         
 
         
