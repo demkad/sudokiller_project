@@ -134,6 +134,7 @@ def print_sudoku(grid):
         print(rij)
 
 # hans ikke hier ook proberen voor op te lossen met 2D lijst:
+"""
 def oplosser_k(su):
     # maak 2D lijst van dict:
     grid_2d = []
@@ -144,6 +145,7 @@ def oplosser_k(su):
             grid_2d.append(grid_rij)
     
     # grid_2d is nu de volledige sudoku in 2d lijst
+"""
     
 
 
