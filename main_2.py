@@ -41,3 +41,30 @@ def plaats_geldige_nummer(su,pos,num):
                     return False
         else: 
             return True
+    
+def oplosser(su):
+    positie = vind_lege_cel(su)
+    if not positie:
+        return True
+    else:
+        rij, kolom = positie
+    
+    for num in range(1,10):
+        if plaats_geldige_nummer(su,(rij,kolom),num):
+            su[rij][kolom] = num
+
+            if oplosser(su):
+                return True
+            else:
+                su[rij][kolom] = 0
+
+    return False
+
+## oplossing
+for rij in unsolved_sudoku:
+    print(rij)
+
+oplosser(unsolved_sudoku)
+print("-----------------------------------------------")
+for rij in unsolved_sudoku:
+    print(rij)
