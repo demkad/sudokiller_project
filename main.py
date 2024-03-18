@@ -93,6 +93,7 @@ def control_cel(num,cel,rij,kolom,kamer):
     else: 
         return True
 
+
 set_sudoku = {}
 def oplosser(sudoku):
     # Aanmaak van een niewe dictionary, value wordt hier een lege set. In deze sets komen de nummers in dat door de programma ingevuld is.
@@ -103,7 +104,7 @@ def oplosser(sudoku):
     prev_waarde = ""
     prev_cel = "A1"
     ingevulde_cellen = []
-    for i in range(100):
+    for i in range(80):
         for cel,waarde in sudoku.items():
             if waarde == "":
                 for num in range(1,10):
@@ -122,8 +123,6 @@ def oplosser(sudoku):
             prev_cel = cel
             prev_waarde = num
     print(set_sudoku)
-    
-                
                     
 
 # voor beter beeld op de sudoku te krijgen
@@ -151,14 +150,6 @@ def oplosser_k(su):
     
     # grid_2d is nu de volledige sudoku in 2d lijst
 """
-    
-
-
-
-
-
-
-
 
 sudoku = func_sudoku()
 kolom = func_kolom(sudoku)
