@@ -1,15 +1,15 @@
 # Deze dictionary wordt gebruikt om te testen tijdens het programmeren
-"""sudoku = {
-    'A1': '', 'B1': '', 'C1': '1', 'D1': '', 'E1': '', 'F1': '', 'G1': '', 'H1': '', 'I1': '',
-    'A2': '', 'B2': '', 'C2': '', 'D2': '', 'E2': '', 'F2': '', 'G2': '', 'H2': '', 'I2': '',
-    'A3': '', 'B3': '', 'C3': '', 'D3': '', 'E3': '', 'F3': '', 'G3': '', 'H3': '', 'I3': '',
-    'A4': '', 'B4': '', 'C4': '', 'D4': '', 'E4': '', 'F4': '', 'G4': '', 'H4': '', 'I4': '',
-    'A5': '2', 'B5': '', 'C5': '8', 'D5': '9', 'E5': '', 'F5': '', 'G5': '', 'H5': '', 'I5': '',
-    'A6': '', 'B6': '', 'C6': '', 'D6': '', 'E6': '', 'F6': '', 'G6': '', 'H6': '', 'I6': '',
-    'A7': '', 'B7': '', 'C7': '', 'D7': '', 'E7': '', 'F7': '', 'G7': '', 'H7': '', 'I7': '',
-    'A8': '', 'B8': '', 'C8': '', 'D8': '', 'E8': '', 'F8': '', 'G8': '', 'H8': '', 'I8': '',
-    'A9': '', 'B9': '', 'C9': '', 'D9': '', 'E9': '', 'F9': '', 'G9': '', 'H9': '', 'I9': ''
-    }"""
+sudoku = {
+    'A1': 5, 'B1': 0, 'C1': 0, 'D1': 0, 'E1': 0, 'F1': 0, 'G1': 0, 'H1': 0, 'I1': 9,
+    'A2': 0, 'B2': 0, 'C2': 0, 'D2': 0, 'E2': 0, 'F2': 0, 'G2': 0, 'H2': 0, 'I2': 0,
+    'A3': 2, 'B3': 0, 'C3': 0, 'D3': 0, 'E3': 0, 'F3': 0, 'G3': 0, 'H3': 0, 'I3': 7,
+    'A4': 0, 'B4': 0, 'C4': 0, 'D4': 0, 'E4': 0, 'F4': 0, 'G4': 0, 'H4': 0, 'I4': 0,
+    'A5': 0, 'B5': 0, 'C5': 0, 'D5': 0, 'E5': 0, 'F5': 0, 'G5': 0, 'H5': 0, 'I5': 0,
+    'A6': 6, 'B6': 0, 'C6': 0, 'D6': 0, 'E6': 0, 'F6': 0, 'G6': 0, 'H6': 0, 'I6': 2,
+    'A7': 0, 'B7': 0, 'C7': 0, 'D7': 0, 'E7': 0, 'F7': 0, 'G7': 0, 'H7': 0, 'I7': 0,
+    'A8': 9, 'B8': 0, 'C8': 0, 'D8': 0, 'E8': 0, 'F8': 0, 'G8': 0, 'H8': 0, 'I8': 5,
+    'A9': 0, 'B9': 0, 'C9': 1, 'D9': 1, 'E9': 3, 'F9': 0, 'G9': 0, 'H9': 0, 'I9': 0
+}
 
 
 """---------- Sudoku aanmaak en verdelingen per kolom, rij en kamer ----------"""
@@ -24,7 +24,7 @@ def func_sudoku():
     list_digit = ['1', '2', '3', '4', '5', '6', '7', '8', '9','10','11','12']
     for digit in list_digit[0:invoer]:
         for alfa in list_alfa[0:invoer]:
-            sudoku[alfa+digit] = ''
+            sudoku[alfa+digit] = 0
     return sudoku
 
 # Cellen van sudoku worden verdeeld per kolom
@@ -93,36 +93,29 @@ def control_cel(num,cel,rij,kolom,kamer):
     else: 
         return True
 
+def vind_lege_cel(sudoku):
+    for cel,waarde in sudoku.items():
+        if sudoku[cel] == 0:
+            return cel
+    return None
+
 
 set_sudoku = {}
 def oplosser(sudoku):
-    # Aanmaak van een niewe dictionary, value wordt hier een lege set. In deze sets komen de nummers in dat door de programma ingevuld is.
-    
-    for key in sudoku:
-        set_sudoku[key] = set()
-    # Cellen worden vanaf nu een voor een gecontrolleerd
-    prev_waarde = ""
-    prev_cel = "A1"
-    ingevulde_cellen = []
-    for i in range(80):
-        for cel,waarde in sudoku.items():
-            if waarde == "":
-                for num in range(1,10):
-                    num = str(num)
-                    # Hieronder wordt gecontroleerd of de nummer aanwezig is in de rij,kolom en kamer, indien niet wordt de nummer opgeslaan in de cel.
-                    if control_cel(num,cel,func_rij(sudoku),func_kolom(sudoku),func_kamer(sudoku)) and num not in set_sudoku[cel]: 
-                        sudoku[cel] = num
-                        ingevulde_cellen.append(cel)
-                        break # Als de cel ingevuld is stopt de 2de loop, de programma gaat wel verder om de volgende cel te controleren
-            if sudoku[cel] == "":
-                set_sudoku[prev_cel].add(prev_waarde)
-                sudoku[prev_cel] = ""
-                #for cellen in ingevulde_cellen:
-                #   sudoku[cellen] = ""
-                break
-            prev_cel = cel
-            prev_waarde = num
-    print(set_sudoku)
+    positie = vind_lege_cel(sudoku)
+    if not positie:
+        return True
+    else:
+        cel = positie
+
+    for num in range(1,10):
+        if control_cel(num,cel,func_rij(sudoku),func_kolom(sudoku),func_kamer(sudoku)):
+            sudoku[cel] = num
+            if oplosser(sudoku):
+                return True
+            else:
+                sudoku[cel] = 0
+    return False
                     
 
 # voor beter beeld op de sudoku te krijgen
@@ -151,7 +144,7 @@ def oplosser_k(su):
     # grid_2d is nu de volledige sudoku in 2d lijst
 """
 
-sudoku = func_sudoku()
+#sudoku = func_sudoku()
 kolom = func_kolom(sudoku)
 rij = func_rij(sudoku)
 kamer = func_kamer(sudoku)
