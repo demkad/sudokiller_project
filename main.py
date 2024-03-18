@@ -138,6 +138,23 @@ def print_sudoku(grid):
     for rij in grid_2d:
         print(rij)
 
+# hans ikke hier ook proberen voor op te lossen met 2D lijst:
+"""
+def oplosser_k(su):
+    # maak 2D lijst van dict:
+    grid_2d = []
+    grid_rij = []
+    for cel, waarde in su.items():
+        grid_rij.append(waarde)
+        if len(grid_rij) == 9:
+            grid_2d.append(grid_rij)
+    
+    # grid_2d is nu de volledige sudoku in 2d lijst
+"""
+    
+
+
+
 
 
 
