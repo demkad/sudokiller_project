@@ -5,6 +5,7 @@ from main_2 import oplosser, vind_lege_cel, plaats_geldige_nummer
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         # Get the data from the form
@@ -14,14 +15,15 @@ def index():
         grid = [list(map(int, row.split())) for row in grid.split('\n')]
 
         # Solve the sudoku
-        result = oplosser(grid)
+        oplosser(grid)
 
-        # Convert the result back to a string
-        result = '\n'.join(' '.join(map(str, row)) for row in result)
+        # Convert the grid back to a string
+        result = '\n'.join(' '.join(map(str, row)) for row in grid)
 
-        return render_template('index.html', result=result)
+        return render_template('index2.html', result=result)
 
-    return render_template('index.html')
+    return render_template('index2.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
