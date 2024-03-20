@@ -1,2 +1,0 @@
-# sudokiller_project
-Project_sudokiller
