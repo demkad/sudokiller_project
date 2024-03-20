@@ -1,0 +1,22 @@
+header {
+    background-color: #0a0a23; /* This is dark blue */
+    color: #FFFFFF; /* This is white */
+    border-bottom: 3px solid orange;
+}
+
+header h1 {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px 0;
+}
+
+header p {
+    font-size: 0.7em;
+    margin-left: 30px; /* Adjust this value to align with the first letter of the h1 element */
+}
+
+#sudoku-grid {
+    resize: none; /* This disables resizing */
+    width: 300px; /* Adjust this value to suit your needs */
+    height: 300px; /* Adjust this value to suit your needs */
+}

@@ -2,11 +2,20 @@
 <html>
 <head>
     <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+<header>
+    <h1>Sudoku Killer</h1>
+    <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
+</header>
 <body>
     <form method="POST">
-        <textarea name="grid" rows="9" cols="20"></textarea>
-        <input type="submit" value="Solve">
+        <div>
+            <textarea id="sudoku-grid" name="grid" rows="9" cols="20"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Solve">
+        </div>
     </form>
     {% if result %}
     <h2>Result:</h2>
