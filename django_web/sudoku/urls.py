@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("",views.index,name="index"),
-    path("sudoku_spelen", views.sudoku_spelen, name="sudoku_spelen"),
-    path("sudoku_oplossen", views.sudoku_oplossen, name="sudoku_oplossen")
+    path("index_2",views.index_2,name="index2"),
+    path('<int:category_id>', views.getSudokuByCategoryId, name="sudoku_by_category_id"),
+    path('<str:category>', views.getSudokuByCategory, name='sudoku_by_category'),
 ]
