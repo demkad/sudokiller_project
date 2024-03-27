@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 # import your sudoku solver script
-from sudokiller import oplosser, vind_lege_cel, plaats_geldige_nummer
+from src.sudokiller import oplosser, vind_lege_cel, plaats_geldige_nummer
 
 app = Flask(__name__)
 
