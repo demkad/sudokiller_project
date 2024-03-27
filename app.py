@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    return render_template('index.html')
+
+@app.route('/sudoku', methods=['GET', 'POST'])
+def sudoku_oplosser():
     if request.method == 'POST':
         # Initialize an empty grid
         grid = [[0 for _ in range(9)] for _ in range(9)]
