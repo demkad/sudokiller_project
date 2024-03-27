@@ -61,10 +61,12 @@ def oplosser(su):
 
 ## oplossing
 
-oplosser(unsolved_sudoku)
+if oplosser(unsolved_sudoku):
+    print('Sudoku opgelost')
+else:
+    print('Sudoku kan niet opgelost worden')
 
 print("-----------------------------------------------")
-
 
 for rij in unsolved_sudoku:
     print(rij)
