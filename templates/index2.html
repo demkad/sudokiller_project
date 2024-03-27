@@ -15,16 +15,12 @@
             {% for i in range(9) %}
             <tr>
                 {% for j in range(9) %}
-                <td><input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)"></td>
+                <td><input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] if grid[i][j] != 0 else '' }}"></td>
                 {% endfor %}
             </tr>
             {% endfor %}
         </table>
         <input type="submit" value="Solve">
     </form>
-    {% if result %}
-    <h2>Result:</h2>
-    <pre>{{ result }}</pre>
-    {% endif %}
 </body>
 </html>

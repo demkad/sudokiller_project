@@ -10,26 +10,21 @@ def index():
 
 @app.route('/sudoku', methods=['GET', 'POST'])
 def sudoku_oplosser():
+    grid = [[0 for _ in range(9)] for _ in range(9)]
+    user_grid = [[False for _ in range(9)] for _ in range(9)]
     if request.method == 'POST':
-        # Initialize an empty grid
-        grid = [[0 for _ in range(9)] for _ in range(9)]
-
         # Get the data from the form
         for i in range(9):
             for j in range(9):
                 cell = request.form.get(f'cell-{i}-{j}')
-                if cell.isdigit():
+                if cell and cell.isdigit():
                     grid[i][j] = int(cell)
+                    user_grid[i][j] = True
 
         # Solve the sudoku
         oplosser(grid)
 
-        # Convert the grid back to a string
-        result = '\n'.join(' '.join(map(str, row)) for row in grid)
-
-        return render_template('index2.html', result=result)
-
-    return render_template('index2.html')
+    return render_template('index2.html', grid=grid, user_grid=user_grid)
 
 
 if __name__ == '__main__':
