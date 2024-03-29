@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="static/script.js"></script>
+</head>
+<header>
+    <h1>Sudoku Game</h1>
+    <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
+</header>
+<body>
+    <form method="POST">
+        <input type="submit" name="submit" value="Check">
+        <input type="submit" name="submit" value="Nieuwe Spel">
+        <label for="difficulty">Moeilijkheidsgraad:</label>
+        <select name="difficulty" id="difficulty">
+            <option value="makkelijk">Makkelijk</option>
+            <option value="normaal">Normaal</option>
+            <option value="moeilijk">Moeilijk</option>
+        </select>
+        <table id="sudoku-grid">
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td>
+                    {% if user_grid[i][j] %}
+                        <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] if grid[i][j] != 0 else '' }}" readonly>
+                    {% else %}
+                        <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] if grid[i][j] != 0 else '' }}">
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Check">
+    </form>
+</body>
+</html>
