@@ -1,40 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sudoku Game</title>
+    <title>Sudoku Solver</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="static/script.js"></script>
 </head>
 <header>
-    <h1>Sudoku Game</h1>
+    <h1>Sudoku Killer</h1>
     <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
 </header>
 <body>
     <form method="POST">
-        <input type="submit" name="submit" value="Check">
-        <input type="submit" name="submit" value="Nieuwe Spel">
-        <label for="difficulty">Moeilijkheidsgraad:</label>
-        <select name="difficulty" id="difficulty">
+        <label for="moeilijkheidsgraad">Kies een moeilijkheidsgraad:</label>
+        <select name="moeilijkheidsgraad" id="moeilijkheidsgraad">
             <option value="makkelijk">Makkelijk</option>
             <option value="normaal">Normaal</option>
             <option value="moeilijk">Moeilijk</option>
         </select>
+        <button type="submit" name="actie" value="nieuw_spel">Nieuw Spel</button>
+        <button type="submit" name="actie" value="controleer">Controleer</button>
         <table id="sudoku-grid">
             {% for i in range(9) %}
             <tr>
                 {% for j in range(9) %}
                 <td>
-                    {% if user_grid[i][j] %}
-                        <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] if grid[i][j] != 0 else '' }}" readonly>
+                    {% if grid[i][j] != 0 %}
+                    <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] }}" readonly>
                     {% else %}
-                        <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] if grid[i][j] != 0 else '' }}">
+                    <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ user_grid[i][j] if user_grid[i][j] != 0 else '' }}">
                     {% endif %}
                 </td>
                 {% endfor %}
             </tr>
             {% endfor %}
         </table>
-        <input type="submit" value="Check">
     </form>
 </body>
 </html>

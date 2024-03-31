@@ -1,76 +1,63 @@
 import random
 
-def maak_sudoku():
-    zijde = 9
-    bord = [[None]*zijde for _ in range(zijde)]
-    for i in range(zijde):
-        for j in range(zijde):
-            bord[i][j] = (i*3 + i//3 + j) % zijde + 1
-    random.shuffle(bord)
-    return bord
-
-def is_geldig(bord, rij, kolom, num):
-    for x in range(9):
-        if bord[rij][x] == num:
-            return False
-
-    for x in range(9):
-        if bord[x][kolom] == num:
-            return False
-
-    startRij = rij - rij % 3
-    startKolom = kolom - kolom % 3
-    for i in range(3):
-        for j in range(3):
-            if bord[i + startRij][j + startKolom] == num:
-                return False
-    return True
-
-def verwijder_cellen(bord, moeilijkheidsgraad):
-    zijde = len(bord)
-    cellen_te_verwijderen = zijde*moeilijkheidsgraad
-    for _ in range(cellen_te_verwijderen):
-        rij, kolom = random.randint(0, zijde - 1), random.randint(0, zijde - 1)
-        while bord[rij][kolom] is None:
-            rij, kolom = random.randint(0, zijde - 1), random.randint(0, zijde - 1)
-        bord[rij][kolom] = None
-    return bord
-
-def vul_bord(bord, rij=0, kolom=0):
-    if rij == 9 - 1 and kolom == 9:
-        return True
-
+def maak_sudoku(bord, rij=0, kolom=0):
     if kolom == 9:
+        if rij == 8:
+            return True
         rij += 1
         kolom = 0
-
-    if bord[rij][kolom] is not None and bord[rij][kolom] > 0:
-        return vul_bord(bord, rij, kolom + 1)
-
-    for num in range(1, 10):
-        if is_geldig(bord, rij, kolom, num):
+    if bord[rij][kolom] != 0:
+        return maak_sudoku(bord, rij, kolom + 1)
+    for num in random.sample(range(1, 10), 9):
+        if geldige_zet(bord, rij, kolom, num):
             bord[rij][kolom] = num
-
-            if vul_bord(bord, rij, kolom + 1):
+            if maak_sudoku(bord, rij, kolom + 1):
                 return True
-
-        bord[rij][kolom] = None
-
+    bord[rij][kolom] = 0
     return False
 
-def controleer_bord(bord):
-    for i in range(9):
-        for j in range(9):
-            if bord[i][j] is not None:
-                temp = bord[i][j]
-                bord[i][j] = None
-                if not is_geldig(bord, i, j, temp):
-                    return False
-                bord[i][j] = temp
-    return True
+def geldige_zet(bord, rij, kolom, num):
+    rij_blok, kolom_blok = rij - rij % 3, kolom - kolom % 3
+    if all(num != bord[i][kolom] for i in range(9)) and all(num != bord[rij][j] for j in range(9)) and all(num != bord[i][j] for i in range(rij_blok, rij_blok + 3) for j in range(kolom_blok, kolom_blok + 3)):
+        return True
+    return False
 
 def genereer_sudoku(moeilijkheidsgraad):
-    bord = [[None for _ in range(9)] for _ in range(9)]
-    vul_bord(bord)
-    bord = verwijder_cellen(bord, moeilijkheidsgraad)
+    bord = [[0]*9 for _ in range(9)]
+    nummers = random.sample(range(1, 10), 9)
+    for i in range(9):
+        bord[i][i] = nummers[i]
+    maak_sudoku(bord)
+    if moeilijkheidsgraad == 'makkelijk':
+        leegte = 20
+    elif moeilijkheidsgraad == 'normaal':
+        leegte = 40
+    elif moeilijkheidsgraad == 'moeilijk':
+        leegte = 60
+    else:
+        print('Ongeldige moeilijkheidsgraad')
+        return
+    cellen = [(i, j) for i in range(9) for j in range(9)]
+    for _ in range(leegte):
+        i, j = random.choice(cellen)
+        cellen.remove((i, j))
+        bord[i][j] = 0
     return bord
+
+def geldige_sudoku(bord):
+    for i in range(9):
+        rij = bord[i]
+        if len(set(rij)) != 9 or 0 in rij:
+            return False
+        kolom = [bord[j][i] for j in range(9)]
+        if len(set(kolom)) != 9 or 0 in kolom:
+            return False
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            vierkant = []
+            for x in range(3):
+                for y in range(3):
+                    vierkant.append(bord[i+x][j+y])
+            if len(set(vierkant)) != 9 or 0 in vierkant:
+                return False
+    return True
