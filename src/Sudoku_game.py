@@ -1,5 +1,11 @@
 import random
 
+def geldige_zet(bord, rij, kolom, num):
+    rij_blok, kolom_blok = rij - rij % 3, kolom - kolom % 3
+    if all(num != bord[i][kolom] for i in range(9)) and all(num != bord[rij][j] for j in range(9)) and all(num != bord[i][j] for i in range(rij_blok, rij_blok + 3) for j in range(kolom_blok, kolom_blok + 3)):
+        return True
+    return False
+
 def maak_sudoku(bord, rij=0, kolom=0):
     if kolom == 9:
         if rij == 8:
@@ -14,12 +20,6 @@ def maak_sudoku(bord, rij=0, kolom=0):
             if maak_sudoku(bord, rij, kolom + 1):
                 return True
     bord[rij][kolom] = 0
-    return False
-
-def geldige_zet(bord, rij, kolom, num):
-    rij_blok, kolom_blok = rij - rij % 3, kolom - kolom % 3
-    if all(num != bord[i][kolom] for i in range(9)) and all(num != bord[rij][j] for j in range(9)) and all(num != bord[i][j] for i in range(rij_blok, rij_blok + 3) for j in range(kolom_blok, kolom_blok + 3)):
-        return True
     return False
 
 def genereer_sudoku(moeilijkheidsgraad):
