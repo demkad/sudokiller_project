@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request , session,  redirect, url_for
 # import your sudoku solver script
 from src.sudokiller import oplosser
 from src.Sudoku_game import genereer_sudoku, geldige_sudoku
+from src.mijnveger import Minesweeper
 from werkzeug.exceptions import abort
 
 app = Flask(__name__)
@@ -61,6 +62,63 @@ def sudoku_game():
             abort(400, 'Ongeldige actie')
     return render_template('sudoku.html', grid=grid, user_grid=user_grid)
 
+"""----------------------------------------Minesweeper---------------------------------------------------"""
+
+game = None  # global variable to store the game state
+
+@app.route('/start', methods=['GET', 'POST'])
+def start():
+    global game
+    if request.method == 'POST':
+        difficulty = request.form.get('difficulty')
+        game = Minesweeper(difficulty)
+    else:
+        if game is None:
+            game = Minesweeper('makkelijk')  # default to 'makkelijk' difficulty
+    return redirect(url_for('mijnveger'))  # always redirect to 'mijnveger'
+
+@app.route('/mijnveger', methods=['GET'])
+def mijnveger():
+    global game
+    if game is None:
+        game = Minesweeper('makkelijk')
+    return render_template('mijnveger.html', game=game)
+
+@app.route('/reveal', methods=['POST'])
+def reveal():
+    global game
+    row = int(request.form.get('row'))
+    col = int(request.form.get('col'))
+    result = game.board.reveal_cell(row, col)
+    if result == 'mine':
+        game = Minesweeper('makkelijk')  # start a new game with 'makkelijk' difficulty
+        return redirect(url_for('mijnveger'))
+    elif result == 'win':
+        game = Minesweeper('makkelijk')  # start a new game with 'makkelijk' difficulty
+        return redirect(url_for('mijnveger'))
+    else:
+        return redirect(url_for('mijnveger'))
+
+@app.route('/flag', methods=['POST'])
+def flag():
+    global game
+    row = int(request.form.get('row'))
+    col = int(request.form.get('col'))
+    game.board.flag_cell(row, col)
+    if game.board.board[row][col].is_flagged:
+        session['message'] = f'Cell at ({row}, {col}) has been flagged.'
+    else:
+        session['message'] = f'Flag at ({row}, {col}) has been removed.'
+    session['game'] = game.to_dict()  # update the game in the session
+    return redirect(url_for('mijnveger'))
+
+@app.route('/hint', methods=['POST'])
+def hint():
+    game = Minesweeper.from_dict(session['game'])
+    game.use_hint()
+    session['game'] = game.to_dict()
+    session['message'] = 'A hint has been used.'
+    return redirect(url_for('mijnveger'))
 
 if __name__ == '__main__':
     app.run(debug=True)
