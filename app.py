@@ -11,7 +11,7 @@ app.secret_key = 'jouw geheime sleutel'
 def index():
     return render_template('index.html')
 
-@app.route('/sudoku', methods=['GET', 'POST'])
+@app.route('/sudoku_oplosser', methods=['GET', 'POST'])
 def sudoku_oplosser():
     grid = [[0 for _ in range(9)] for _ in range(9)]
     user_grid = [[False for _ in range(9)] for _ in range(9)]
@@ -27,7 +27,7 @@ def sudoku_oplosser():
         # Solve the sudoku
         oplosser(grid)
 
-    return render_template('index2.html', grid=grid, user_grid=user_grid)
+    return render_template('sudoku_oplosser.html', grid=grid, user_grid=user_grid)
 
 
 @app.route('/sudoku_game', methods=['GET', 'POST'])
