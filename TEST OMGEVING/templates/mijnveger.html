@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mijnveger</title>
+</head>
+<body>
+    {% if session['message'] %}
+    <p>{{ session['message'] }}</p>
+    {% endif %}
+    <form method="POST" action="{{ url_for('start') }}">
+        <label for="difficulty">Kies een moeilijkheidsgraad:</label>
+        <select name="difficulty" id="difficulty">
+            <option value="makkelijk">Makkelijk</option>
+            <option value="normal">Normaal</option>
+            <option value="hard">Moeilijk</option>
+        </select>
+        <input type="submit" value="Nieuw Spel">
+    </form>
+    <table>
+        {% for row in range(game.board.size) %}
+        <tr>
+            {% for col in range(game.board.size) %}
+            <td>
+                {% if game.board.board[row][col].is_revealed %}
+                    {% if game.board.board[row][col].is_mine %}
+                        M
+                    {% else %}
+                        {{ game.board.board[row][col].adjacent_mines }}
+                    {% endif %}
+                {% else %}
+                    <form action="{{ url_for('reveal') }}" method="post">
+                        <input type="hidden" name="row" value="{{ row }}">
+                        <input type="hidden" name="col" value="{{ col }}">
+                        <input type="submit" value="Reveal">
+                    </form>
+                    <form action="{{ url_for('flag') }}" method="post">
+                        <input type="hidden" name="row" value="{{ row }}">
+                        <input type="hidden" name="col" value="{{ col }}">
+                        <input type="submit" value="{{ 'Unflag' if game.board.board[row][col].is_flagged else 'Flag' }}">
+                    </form>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
