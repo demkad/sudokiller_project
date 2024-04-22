@@ -5,12 +5,21 @@ from src.Sudoku_game import genereer_sudoku, geldige_sudoku
 from src.mijnveger import Minesweeper
 from werkzeug.exceptions import abort
 
+
+
 app = Flask(__name__)
 app.secret_key = 'jouw geheime sleutel'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
+
+@app.route('/login.html', methods=['GET','POST'])
+def login():
+
+    return render_template('login.html')
+
 
 @app.route('/sudoku_oplosser', methods=['GET', 'POST'])
 def sudoku_oplosser():
