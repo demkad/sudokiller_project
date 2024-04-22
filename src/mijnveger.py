@@ -91,13 +91,11 @@ class Minesweeper:
         self.hint_used = False  # add this line
 
     def use_hint(self):
-        if not self.hint_used:
-            self.hint_used = True
-            self.start_time -= 600
-            for row in range(self.board.size):
-                for col in range(self.board.size):
-                    if self.board.board[row][col].is_mine:
-                        return (row, col)
+        for row in range(self.board.size):
+            for col in range(self.board.size):
+                if not self.board.board[row][col].is_mine and not self.board.board[row][col].is_revealed:
+                    self.board.board[row][col].is_revealed = True
+                    return
 
     def is_game_over(self):
         for row in range(self.board.size):

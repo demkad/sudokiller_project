@@ -47,14 +47,15 @@ header p {
 #mijnveger-grid {
     border-collapse: collapse;
 }
+
 #mijnveger-grid td {
     border: 1px solid black;
-    min-width: 30px;
-    min-height: 30px;
+    width: 60px;  /* set the width of the cells */
+    height: 60px;  /* set the height of the cells */
     text-align: center;
     vertical-align: middle;
 }
 
-.red-grid {
-    border-color: red;
+.flagged {
+    background-color: red;
 }

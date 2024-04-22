@@ -6,13 +6,18 @@
     <script>
         function colorGrid(row, col) {
             var cell = document.getElementById('cell-' + row + '-' + col);
-            cell.style.backgroundColor = 'red';
+            if (cell.classList.contains('flagged')) {
+                cell.classList.remove('flagged');
+            }
         }
-        </script>
+    </script>
 </head>
 <body>
     {% if session['message'] %}
     <p>{{ session['message'] }}</p>
+    {% endif %}
+    {% if session['has_won'] %}
+    <p>Gefeliciteerd, je hebt gewonnen!</p>
     {% endif %}
     <form method="POST" action="{{ url_for('start') }}">
         <label for="difficulty">Kies een moeilijkheidsgraad:</label>
@@ -23,11 +28,15 @@
         </select>
         <input type="submit" value="Nieuw Spel">
     </form>
+    </form>
+    <form method="POST" action="{{ url_for('hint') }}">
+        <input type="submit" value="Hint">
+    </form>
     <table id="mijnveger-grid">
         {% for row in range(game.board.size) %}
         <tr>
             {% for col in range(game.board.size) %}
-            <td id="cell-{{ row }}-{{ col }}">
+            <td id="cell-{{ row }}-{{ col }}" class="{{ 'flagged' if game.board.board[row][col].is_flagged else '' }}">
                 {% if game.board.board[row][col].is_revealed %}
                     {% if game.board.board[row][col].is_mine %}
                         M
@@ -38,7 +47,7 @@
                     <form action="{{ url_for('reveal') }}" method="post">
                         <input type="hidden" name="row" value="{{ row }}">
                         <input type="hidden" name="col" value="{{ col }}">
-                        <input type="submit" value="Reveal">
+                        <input type="submit" value="Reveal" onclick="colorGrid('{{ row }}', '{{ col }}')">
                     </form>
                     <form action="{{ url_for('flag') }}" method="post">
                         <input type="hidden" name="row" value="{{ row }}">

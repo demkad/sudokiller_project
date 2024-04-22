@@ -69,6 +69,7 @@ game = None  # global variable to store the game state
 @app.route('/start', methods=['GET', 'POST'])
 def start():
     global game
+    session['has_won'] = False  # reset the winning status
     if request.method == 'POST':
         difficulty = request.form.get('difficulty')
         game = Minesweeper(difficulty)
@@ -89,15 +90,14 @@ def reveal():
     global game
     row = int(request.form.get('row'))
     col = int(request.form.get('col'))
-    result = game.board.reveal_cell(row, col)
+    result = game.board.reveal_cell(row, col)  # store the output of reveal_cell in result
+    if game.board.board[row][col].is_flagged:
+        game.board.board[row][col].is_flagged = False
     if result == 'mine':
         game = Minesweeper('makkelijk')  # start a new game with 'makkelijk' difficulty
-        return redirect(url_for('mijnveger'))
-    elif result == 'win':
-        game = Minesweeper('makkelijk')  # start a new game with 'makkelijk' difficulty
-        return redirect(url_for('mijnveger'))
-    else:
-        return redirect(url_for('mijnveger'))
+    elif game.board.has_won():  # check if the game has been won after every reveal
+        session['has_won'] = True
+    return redirect(url_for('mijnveger'))
 
 @app.route('/flag', methods=['POST'])
 def flag():
@@ -110,10 +110,8 @@ def flag():
 
 @app.route('/hint', methods=['POST'])
 def hint():
-    game = Minesweeper.from_dict(session['game'])
+    global game
     game.use_hint()
-    session['game'] = game.to_dict()
-    session['message'] = 'A hint has been used.'
     return redirect(url_for('mijnveger'))
 
 if __name__ == '__main__':
