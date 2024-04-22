@@ -105,11 +105,7 @@ def flag():
     row = int(request.form.get('row'))
     col = int(request.form.get('col'))
     game.board.flag_cell(row, col)
-    if game.board.board[row][col].is_flagged:
-        session['message'] = f'Cell at ({row}, {col}) has been flagged.'
-    else:
-        session['message'] = f'Flag at ({row}, {col}) has been removed.'
-    session['game'] = game.to_dict()  # update the game in the session
+    session['color_grid'] = True  # set color_grid to True
     return redirect(url_for('mijnveger'))
 
 @app.route('/hint', methods=['POST'])

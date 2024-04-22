@@ -43,3 +43,18 @@ header p {
     box-sizing: border-box;
     font-size: 20px;
 }
+
+#mijnveger-grid {
+    border-collapse: collapse;
+}
+#mijnveger-grid td {
+    border: 1px solid black;
+    min-width: 30px;
+    min-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.red-grid {
+    border-color: red;
+}

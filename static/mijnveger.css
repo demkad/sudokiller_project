@@ -1,0 +1,12 @@
+/* FILE: mijnveger.css */
+
+#mijnveger-grid {
+    border-collapse: collapse;
+}
+#mijnveger-grid td {
+    border: 1px solid black;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+}

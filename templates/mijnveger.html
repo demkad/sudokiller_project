@@ -2,6 +2,13 @@
 <html>
 <head>
     <title>Mijnveger</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function colorGrid(row, col) {
+            var cell = document.getElementById('cell-' + row + '-' + col);
+            cell.style.backgroundColor = 'red';
+        }
+        </script>
 </head>
 <body>
     {% if session['message'] %}
@@ -16,11 +23,11 @@
         </select>
         <input type="submit" value="Nieuw Spel">
     </form>
-    <table>
+    <table id="mijnveger-grid">
         {% for row in range(game.board.size) %}
         <tr>
             {% for col in range(game.board.size) %}
-            <td>
+            <td id="cell-{{ row }}-{{ col }}">
                 {% if game.board.board[row][col].is_revealed %}
                     {% if game.board.board[row][col].is_mine %}
                         M
@@ -36,7 +43,7 @@
                     <form action="{{ url_for('flag') }}" method="post">
                         <input type="hidden" name="row" value="{{ row }}">
                         <input type="hidden" name="col" value="{{ col }}">
-                        <input type="submit" value="{{ 'Unflag' if game.board.board[row][col].is_flagged else 'Flag' }}">
+                        <input type="submit" value="{{ 'Unflag' if game.board.board[row][col].is_flagged else 'Flag' }}" onclick="colorGrid('{{ row }}', '{{ col }}')">
                     </form>
                 {% endif %}
             </td>
