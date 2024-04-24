@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 # Database gegevens. 
 # Verander User en passwd door uw eigen mysql workbench gegevens.
 # Database moet user_data zijn. 
@@ -7,7 +8,8 @@ db = mysql.connector.connect(
     host = 'localhost',
     user ='root',
     passwd = 'VAP_nam_006',
-    database = 'user_data'
+    database = 'user_data', # Database naam, dit moet u verwijderen als u de database nog niet heeft aangemaakt
+    auth_plugin='mysql_native_password'
 )
 
 mycursor= db.cursor()
@@ -31,4 +33,27 @@ mycursor.close()
 
 db.close()
 
+
+"""
+data gebruiker
+- perid (pk)
+- voornaam
+- achternaam
+- geboortedatum
+- gebruikersnaam
+- password
+
+data game
+- spelid (pk)
+- naam spel
+
+data scorebord
+- score_id (pk)
+- perid (fk)
+- spelid (fk)
+- moeielijkheidsgraad
+- score 
+- time
+- datum
+"""
 

@@ -4,6 +4,14 @@
     <title>Game Selectie</title>
 </head>
 <body>
+    <div style="text-align: right;">
+        {% if 'username' in session %}
+            <p>Welkom, {{ session['username'] }}!</p>
+            <a href="/logout"><button>Uitloggen</button></a>
+        {% else %}
+            <a href="/login"><button>Inloggen</button></a>
+        {% endif %}
+    </div>
     <h1>Welkom bij onze gameselectie</h1>
     <p>Kies een spel om te spelen:</p>
     <div>

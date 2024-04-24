@@ -12,8 +12,28 @@ app.secret_key = 'jouw geheime sleutel'
 def index():
     return render_template('index.html')
 
+"""----------------------------------------Login---------------------------------------------------"""
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # Voeg hier je code toe om de inloggegevens te controleren
+        if username == 'correcte gebruikersnaam' and password == 'correcte wachtwoord':
+            session['username'] = username
+            return redirect(url_for('index'))
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
+"""----------------------------------------Sudoku---------------------------------------------------"""
 @app.route('/sudoku_oplosser', methods=['GET', 'POST'])
 def sudoku_oplosser():
+    if 'username' not in session:
+        return redirect(url_for('login'))
     grid = [[0 for _ in range(9)] for _ in range(9)]
     user_grid = [[False for _ in range(9)] for _ in range(9)]
     if request.method == 'POST':
