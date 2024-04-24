@@ -12,6 +12,12 @@
         }
     </script>
 </head>
+<header>
+    <a href="{{ url_for('index') }}" style="text-decoration: none; color: inherit;">
+        <h1>Mijnveger</h1>
+        <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
+    </a>
+</header>
 <body>
     {% if session['message'] %}
     <p>{{ session['message'] }}</p>
@@ -27,10 +33,7 @@
             <option value="hard">Moeilijk</option>
         </select>
         <input type="submit" value="Nieuw Spel">
-    </form>
-    </form>
-    <form method="POST" action="{{ url_for('hint') }}">
-        <input type="submit" value="Hint">
+        <input type="submit" value="Hint" formaction="{{ url_for('hint') }}">
     </form>
     <table id="mijnveger-grid">
         {% for row in range(game.board.size) %}
