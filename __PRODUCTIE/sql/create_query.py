@@ -64,9 +64,14 @@ CREATE TABLE `user_data`.`scorebord_data` (
     ON UPDATE NO ACTION);
 """
 
-sql = user_data
+data_input = """
+INSERT INTO `user_data`.`user_data` (`voornaam`, `achternaam`, `geboortedatum`, `gebruikersnaam`, `password`) VALUES ('Melike', 'Demirtas', '1991-08-15', 'melike_71', 'demirtas71');
+"""
+
+sql = data_input
 
 mycursor.execute(sql)
+db.commit()  # Commit de wijzigingen input
 
 mycursor.close() 
 
