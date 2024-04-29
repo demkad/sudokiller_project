@@ -25,22 +25,28 @@ mycursor= db.cursor()
 user_data = """
 CREATE TABLE `user_data`.`user_data` (
   `perid` INT NOT NULL AUTO_INCREMENT,
-  `Voornaam` VARCHAR(45) NULL,
-  `Achternaam` VARCHAR(45) NULL,
-  `Geboortedatum` DATE NULL,
-  `Gebruikersnaam` VARCHAR(45) NOT NULL,
-  `Password` VARCHAR(45) NOT NULL,
+  `voornaam` VARCHAR(45) NULL,
+  `achternaam` VARCHAR(45) NULL,
+  `geboortedatum` DATE NULL,
+  `gebruikersnaam` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`perid`),
-  UNIQUE INDEX `Gebruikersnaam_UNIQUE` (`Gebruikersnaam` ASC) VISIBLE);
+  UNIQUE INDEX `gebruikersnaam_UNIQUE` (`gebruikersnaam` ASC) VISIBLE);
+"""
+games_data = """
+CREATE TABLE `user_data`.`games_data` (
+  `game_id` INT NOT NULL AUTO_INCREMENT,
+  `naam` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Game_id`));
 """
 
 sql = user_data
 
 mycursor.execute(sql)
 
-mycursor.close()
+mycursor.close() 
 
-db.close()
+db.close() 
 
 
 """
@@ -53,16 +59,16 @@ data gebruiker
 - password
 
 data game
-- spelid (pk)
+- game_id (pk)
 - naam spel
 
 data scorebord
 - score_id (pk)
 - perid (fk)
-- spelid (fk)
+- game_id (fk)
 - moeielijkheidsgraad
 - score 
-- time
+- tijd
 - datum
 """
 
