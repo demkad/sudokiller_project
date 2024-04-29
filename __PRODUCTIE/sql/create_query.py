@@ -40,6 +40,30 @@ CREATE TABLE `user_data`.`games_data` (
   PRIMARY KEY (`Game_id`));
 """
 
+scorebord_data = """
+CREATE TABLE `user_data`.`scorebord_data` (
+  `score_id` INT NOT NULL AUTO_INCREMENT,
+  `perid` INT NOT NULL,
+  `game_id` INT NOT NULL,
+  `moeielijkheidsgraad` VARCHAR(45) NULL,
+  `score` INT NOT NULL,
+  `tijd` VARCHAR(45) NULL,
+  `datum` DATE NULL,
+  PRIMARY KEY (`score_id`),
+  INDEX `user_idx` (`perid` ASC) VISIBLE,
+  INDEX `game_idx` (`game_id` ASC) VISIBLE,
+  CONSTRAINT `user`
+    FOREIGN KEY (`perid`)
+    REFERENCES `user_data`.`user_data` (`perid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `game`
+    FOREIGN KEY (`game_id`)
+    REFERENCES `user_data`.`games_data` (`game_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+"""
+
 sql = user_data
 
 mycursor.execute(sql)
