@@ -1,6 +1,9 @@
 import mysql.connector
+"""
+# Om connectie te maken met mysql workbench moet je de volgende query uitvoeren in mysql workbench.
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'VAP_nam_006';
 
-
+"""
 # Database gegevens. 
 # Verander User en passwd door uw eigen mysql workbench gegevens.
 # Database moet user_data zijn. 
@@ -19,13 +22,19 @@ mycursor= db.cursor()
 
 
 # Geef uw query in
-sql = """
-CREATE TABLE `user_data`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
+user_data = """
+CREATE TABLE `user_data`.`user_data` (
+  `perid` INT NOT NULL AUTO_INCREMENT,
+  `Voornaam` VARCHAR(45) NULL,
+  `Achternaam` VARCHAR(45) NULL,
+  `Geboortedatum` DATE NULL,
+  `Gebruikersnaam` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`perid`),
+  UNIQUE INDEX `Gebruikersnaam_UNIQUE` (`Gebruikersnaam` ASC) VISIBLE);
 """
+
+sql = user_data
 
 mycursor.execute(sql)
 
