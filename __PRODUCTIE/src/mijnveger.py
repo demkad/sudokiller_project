@@ -82,14 +82,15 @@ class Minesweeper:
         else:
             raise ValueError(f"Unknown difficulty level: {difficulty}")
         self.start_time = time.time() 
+        self.punten = 100
         self.mines_left = self.board.mines
-        self.hint_used = False
 
-    def start_game(self):
-        self.start_time = time.time()  # Stel de starttijd in wanneer het spel begint
     
     def get_elapsed_time(self):
         return time.time() - self.start_time  # Bereken de verstreken tijd sinds het begin van het spel
+    
+    def get_punten(self):
+        return self.punten - self.get_elapsed_time() // 15
 
 
 

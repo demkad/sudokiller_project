@@ -186,7 +186,10 @@ def flag():
 def hint():
     global game
     game.use_hint()
+    game.punten -= 1
     return redirect(url_for('mijnveger'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
