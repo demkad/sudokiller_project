@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register Page</title>
+    </head>
+    <body>
+        <h1>Register</h1>
+        <form method="POST">
+            <div>
+                <label>First Name: <input type="text" name="voornaam"></label>
+            </div>
+            <div>
+                <label>Last Name: <input type="text" name="achternaam"></label>
+            </div>
+            <div>
+                <label>Birth Date: <input type="date" name="geboortedatum"></label>
+            </div>
+            <div>
+                <label>Username: <input type="text" name="username"></label>
+            </div>
+            <div>
+                <label>Password: <input type="password" name="password"></label>
+            </div>
+            <div>
+                <button type="submit">Register</button>
+            </div>
+        </form>
+        {% if registration_complete %}
+            <p>Registration completed. Click below to log in.</p>
+            <a href="/login"><button>Log in</button></a>
+        {% endif %}
+    </body>
+</html>

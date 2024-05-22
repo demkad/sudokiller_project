@@ -5,17 +5,19 @@
     </head>
     <body>
         <h1>Login</h1>
+        <form method="POST">
+            <div>
+                <label>Username: <input type="text" name="username"></label>
+            </div>
+            <div>
+                <label>Password: <input type="password" name="password"></label>
+            </div>
+            <div>
+                <input type="submit" value="Log in">
+            </div>
+        </form>
         <div>
-            <label>Username: <input type=text></label>
-        </div>
-        <div>
-            <label>Password: <input type=password></label>
-        </div>
-        <div>
-            <label><button>Log in</button></label>
-        </div>
-        <div>
-            <label><button>Create Account</button></label>
+            <a href="/register">Create Account</a>
         </div>
     </body>
 </html>

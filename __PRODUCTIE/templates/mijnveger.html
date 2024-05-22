@@ -23,6 +23,7 @@
     <p>{{ session['message'] }}</p>
     {% endif %}
     {% if session['has_won'] %}
+    <p>Time: {{ game.get_elapsed_time() }} seconden</p>
     <p>Gefeliciteerd, je hebt gewonnen!</p>
     {% endif %}
     <form method="POST" action="{{ url_for('start') }}">

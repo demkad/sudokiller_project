@@ -29,16 +29,22 @@ CREATE TABLE `user_data`.`user_data` (
   `achternaam` VARCHAR(45) NULL,
   `geboortedatum` DATE NULL,
   `gebruikersnaam` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`perid`),
   UNIQUE INDEX `gebruikersnaam_UNIQUE` (`gebruikersnaam` ASC) VISIBLE);
 """
+
 games_data = """
 CREATE TABLE `user_data`.`games_data` (
   `game_id` INT NOT NULL AUTO_INCREMENT,
   `naam` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Game_id`));
 """
+gegevens_games = """
+INSERT INTO `user_data`.`games_data` (`game_id`, `naam`) VALUES ('1', 'Sudoku');
+INSERT INTO `user_data`.`games_data` (`game_id`, `naam`) VALUES ('2', 'Mijnveger');
+"""
+
 
 scorebord_data = """
 CREATE TABLE `user_data`.`scorebord_data` (
@@ -65,12 +71,13 @@ CREATE TABLE `user_data`.`scorebord_data` (
 """
 
 data_input = """
-INSERT INTO `user_data`.`user_data` (`voornaam`, `achternaam`, `geboortedatum`, `gebruikersnaam`, `password`) VALUES ('Melike', 'Demirtas', '1991-08-15', 'melike_71', 'demirtas71');
+INSERT INTO `user_data`.`user_data` (`voornaam`, `achternaam`, `geboortedatum`, `gebruikersnaam`, `password`) VALUES ('Yavuz', 'Akdeniz', '1991-08-15', 'yavuz_28', 'akdeniz28');
 """
 
 sql = data_input
 
 mycursor.execute(sql)
+
 db.commit()  # Commit de wijzigingen input
 
 mycursor.close() 

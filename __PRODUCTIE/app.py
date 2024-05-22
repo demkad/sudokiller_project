@@ -4,6 +4,8 @@ from src.sudokiller import oplosser
 from src.Sudoku_game import genereer_sudoku, geldige_sudoku
 from src.mijnveger import Minesweeper
 from werkzeug.exceptions import abort
+from werkzeug.security import check_password_hash, generate_password_hash
+import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = 'jouw geheime sleutel'
@@ -18,11 +20,63 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        # Voeg hier je code toe om de inloggegevens te controleren
-        if username == 'correcte gebruikersnaam' and password == 'correcte wachtwoord':
+
+        # Connectie maken met de database
+        db = mysql.connector.connect(
+            host = 'localhost',
+            user ='root',
+            passwd = 'VAP_nam_006',
+            database = 'user_data', 
+            auth_plugin='mysql_native_password'
+        )
+        mycursor = db.cursor()
+
+        # Query om de gebruiker op te halen
+        mycursor.execute(f"SELECT * FROM user_data WHERE gebruikersnaam = '{username}'")
+        user = mycursor.fetchone()
+
+        # Controleer of de gebruiker bestaat en het wachtwoord correct is
+        if user and check_password_hash(user[5], password):
             session['username'] = username
             return redirect(url_for('index'))
+        else:
+            # Optioneel: foutmelding toevoegen
+            pass
+
     return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    registration_complete = False
+    if request.method == 'POST':
+        voornaam = request.form.get('voornaam')
+        achternaam = request.form.get('achternaam')
+        geboortedatum = request.form.get('geboortedatum')
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Hash the password before saving it
+        hashed_password = generate_password_hash(password)
+
+        # Connect to the database
+        db = mysql.connector.connect(
+            host = 'localhost',
+            user ='root',
+            passwd = 'VAP_nam_006',
+            database = 'user_data', 
+            auth_plugin='mysql_native_password'
+        )
+        mycursor = db.cursor()
+
+        # Query to save the user
+        mycursor.execute(f"INSERT INTO `user_data`.`user_data` (`voornaam`, `achternaam`, `geboortedatum`, `gebruikersnaam`, `password`) VALUES ('{voornaam}', '{achternaam}', '{geboortedatum}', '{username}', '{hashed_password}')")
+        db.commit()
+
+        # Set registration_complete to True after successful registration
+        registration_complete = True
+
+    return render_template('register.html', registration_complete=registration_complete)
+
 
 @app.route('/logout')
 def logout():
