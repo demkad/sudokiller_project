@@ -140,8 +140,9 @@ def sudoku_game():
 
 game = None  # global variable to store the game state
 
+
 @app.route('/start', methods=['GET', 'POST'])
-def start():
+def start(): 
     global game
     session['has_won'] = False  # reset the winning status
     if request.method == 'POST':
@@ -186,7 +187,8 @@ def flag():
 def hint():
     global game
     game.use_hint()
-    game.punten -= 1
+    if game.punten > 0:
+        game.punten -= 10
     return redirect(url_for('mijnveger'))
 
 

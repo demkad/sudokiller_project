@@ -90,7 +90,11 @@ class Minesweeper:
         return time.time() - self.start_time  # Bereken de verstreken tijd sinds het begin van het spel
     
     def get_punten(self):
-        return self.punten - self.get_elapsed_time() // 15
+        if self.punten > 0:
+            return self.punten - self.get_elapsed_time() // 15
+        else:
+            return 0
+
 
 
 
