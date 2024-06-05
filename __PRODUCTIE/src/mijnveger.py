@@ -17,7 +17,6 @@ class Board:
         self.place_mines()
         self.count_adjacent_mines()
 
-
     def place_mines(self):
         mine_positions = random.sample(range(self.size*self.size), self.mines)
         for pos in mine_positions:
@@ -47,7 +46,6 @@ class Board:
             return 'win'
         return ''
 
-
     def has_won(self):
         for row in self.board:
             for cell in row:
@@ -75,28 +73,26 @@ class Minesweeper:
     def __init__(self, difficulty):
         if difficulty in ['easy', 'makkelijk']:
             self.board = Board(size=8, mines=10)
+            self.punten = 100
         elif difficulty == 'normal':
             self.board = Board(size=16, mines=40)
+            self.punten = 200
         elif difficulty == 'hard':
             self.board = Board(size=24, mines=99)
+            self.punten = 300
         else:
             raise ValueError(f"Unknown difficulty level: {difficulty}")
         self.start_time = time.time() 
-        self.punten = 100
         self.mines_left = self.board.mines
 
-    
     def get_elapsed_time(self):
         return time.time() - self.start_time  # Bereken de verstreken tijd sinds het begin van het spel
     
     def get_punten(self):
         if self.punten > 0:
-            return self.punten - self.get_elapsed_time() // 15
+            return self.punten - self.get_elapsed_time() // 15 # Om de 15 seconden verlies je 1 punt
         else:
             return 0
-
-
-
 
     def use_hint(self):
         for row in range(self.board.size):
@@ -104,7 +100,3 @@ class Minesweeper:
                 if not self.board.board[row][col].is_mine and not self.board.board[row][col].is_revealed:
                     self.board.board[row][col].is_revealed = True
                     return
-
-    
-
-    

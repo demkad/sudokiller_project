@@ -19,13 +19,13 @@
     </a>
 </header>
 <body>
-    <p>Punt: {{ game.get_punten() }}</p>
     {% if session['message'] %}
     <p>{{ session['message'] }}</p>
     {% endif %}
     {% if session['has_won'] %}
     <p>Gefeliciteerd, je hebt gewonnen!</p>
     <p>Time: {{ game.get_elapsed_time() }} seconden</p>
+    <p>Punt: {{ game.get_punten() }}</p>
     {% endif %}
     <form method="POST" action="{{ url_for('start') }}">
         <label for="difficulty">Kies een moeilijkheidsgraad:</label>

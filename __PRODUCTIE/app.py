@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request , session,  redirect, url_for
 # import your sudoku solver script
 from src.sudokiller import oplosser
-from src.Sudoku_game import genereer_sudoku, geldige_sudoku
+from src.Sudoku_game import genereer_sudoku, geldige_sudoku, sudoku_game as SudokuGame
 from src.mijnveger import Minesweeper
 from werkzeug.exceptions import abort
 from werkzeug.security import check_password_hash, generate_password_hash
-import mysql.connector
+import mysql.connector, time
 
 app = Flask(__name__)
 app.secret_key = 'jouw geheime sleutel'
@@ -107,13 +107,24 @@ def sudoku_oplosser():
 
 @app.route('/sudoku_game', methods=['GET', 'POST'])
 def sudoku_game():
+    global start_time # deze variabele wordt gebruikt om de speeltijd bij te houden
+    global sudoku_punten # deze variabele wordt gebruikt om de punten bij te houden
     grid = [[0]*9 for _ in range(9)]
     user_grid = [[0]*9 for _ in range(9)]
     if request.method == 'POST':
         actie = request.form.get('actie')
         moeilijkheidsgraad = request.form.get('moeilijkheidsgraad')
+        # Nieuw spel starten
         if actie == 'nieuw_spel':
             grid = genereer_sudoku(moeilijkheidsgraad)
+            if moeilijkheidsgraad == 'makkelijk':
+                sudoku_punten = 100
+            elif moeilijkheidsgraad == 'normaal':
+                sudoku_punten = 200
+            elif moeilijkheidsgraad == 'moeilijk':
+                sudoku_punten = 300
+            start_time = time.time()
+        # Controleren of de sudoku correct is opgelost
         elif actie == 'controleer':
             user_grid = []
             for i in range(9):
@@ -131,7 +142,8 @@ def sudoku_game():
             if geldige_sudoku(user_grid):
                 return 'Gefeliciteerd, u heeft de sudoku correct opgelost!'
             else:
-                return 'Helaas, de sudoku is niet correct opgelost.'
+                speeltijd = time.time() - start_time
+                return str(sudoku_punten - speeltijd // 15) # Helaas, de sudoku is niet correct opgelost.'
         else:
             abort(400, 'Ongeldige actie')
     return render_template('sudoku.html', grid=grid, user_grid=user_grid)

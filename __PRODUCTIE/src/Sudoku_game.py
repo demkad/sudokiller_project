@@ -1,4 +1,4 @@
-import random
+import random, time
 
 def geldige_zet(bord, rij, kolom, num):
     rij_blok, kolom_blok = rij - rij % 3, kolom - kolom % 3
@@ -61,3 +61,20 @@ def geldige_sudoku(bord):
             if len(set(vierkant)) != 9 or 0 in vierkant:
                 return False
     return True
+
+class sudoku_game:
+    def __init__(self, moeilijkheidsgraad):
+        self.start_time = time.time()
+        if moeilijkheidsgraad == 'makkelijk':
+            self.punten = 100
+        elif moeilijkheidsgraad == 'normaal':
+            self.punten = 200
+        elif moeilijkheidsgraad == 'moeilijk':
+            self.punten = 300
+        else:
+            print('Ongeldige moeilijkheidsgraad')
+            return
+
+    def update_punten(self):
+        elapsed_time = time.time() - self.start_time
+        return self.punten - int(elapsed_time // 15)
