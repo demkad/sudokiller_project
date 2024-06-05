@@ -33,7 +33,7 @@ def genereer_sudoku(moeilijkheidsgraad):
     elif moeilijkheidsgraad == 'normaal':
         leegte = 40
     elif moeilijkheidsgraad == 'moeilijk':
-        leegte = 60
+        leegte = 1
     else:
         print('Ongeldige moeilijkheidsgraad')
         return
@@ -62,19 +62,3 @@ def geldige_sudoku(bord):
                 return False
     return True
 
-class sudoku_game:
-    def __init__(self, moeilijkheidsgraad):
-        self.start_time = time.time()
-        if moeilijkheidsgraad == 'makkelijk':
-            self.punten = 100
-        elif moeilijkheidsgraad == 'normaal':
-            self.punten = 200
-        elif moeilijkheidsgraad == 'moeilijk':
-            self.punten = 300
-        else:
-            print('Ongeldige moeilijkheidsgraad')
-            return
-
-    def update_punten(self):
-        elapsed_time = time.time() - self.start_time
-        return self.punten - int(elapsed_time // 15)
