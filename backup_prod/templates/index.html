@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Selectie</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div style="text-align: right;">
+        {% if 'username' in session %}
+            <p>Welkom, {{ session['username'] }}!</p>
+            <a href="/logout"><button>Uitloggen</button></a>
+        {% else %}
+            <a href="/login"><button>Inloggen</button></a>
+        {% endif %}
+    </div>
+    <h1>Welkom bij onze gameselectie</h1>
+    <p>Kies een spel om te spelen:</p>
+    <div>
+        <a href="/sudoku_oplosser">
+            <button>Sudoku Oplosser</button>
+        </a>
+        <a href="/sudoku_game">
+            <button>Sudoku Spel</button>
+        </a>
+        <a href="/mijnveger">
+            <button>Mijnveger</button>
+        </a>
+    </div>
+</body>
+</html>

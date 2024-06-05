@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="static/script.js"></script>
+</head>
+<header>
+    <a href="{{ url_for('index') }}" style="text-decoration: none; color: inherit;">
+        <h1>Sudoku</h1>
+        <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
+    </a>
+</header>
+<body>
+    <form method="POST">
+        <label for="moeilijkheidsgraad">Kies een moeilijkheidsgraad:</label>
+        <select name="moeilijkheidsgraad" id="moeilijkheidsgraad">
+            <option value="makkelijk">Makkelijk</option>
+            <option value="normaal">Normaal</option>
+            <option value="moeilijk">Moeilijk</option>
+        </select>
+        <button type="submit" name="actie" value="nieuw_spel">Nieuw Spel</button>
+        <button type="submit" name="actie" value="controleer">Controleer</button>
+        <table id="sudoku-grid">
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td>
+                    {% if grid[i][j] != 0 %}
+                    <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ grid[i][j] }}" readonly>
+                    {% else %}
+                    <input type="text" name="cell-{{i}}-{{j}}" maxlength="1" oninput="moveToNext(this, event)" value="{{ user_grid[i][j] if user_grid[i][j] != 0 else '' }}">
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

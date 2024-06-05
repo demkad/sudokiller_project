@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mijnveger</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        async function revealCell(row, col) {
+            const response = await fetch('/reveal', {
+                method: 'POST',
+                body: JSON.stringify({ row: row, col: col }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            var cell = document.getElementById('cell-' + row + '-' + col);
+            if (data.is_mine) {
+                // handle mine
+                cell.innerHTML = 'M';
+                endGame();
+            } else {
+                // reveal cell
+                cell.innerHTML = data.adjacent_mines;
+                if (data.adjacent_mines == 0) {
+                    // Use Promise.all to wait for all cells to be revealed
+                    await Promise.all(data.cells_to_reveal.map(cell => revealCell(cell.row, cell.col)));
+                }
+            }
+        }
+
+        function flagCell(row, col) {
+            var cell = document.getElementById('cell-' + row + '-' + col);
+            fetch("{{ url_for('flag') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ row: row, col: col }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_flagged) {
+                    cell.classList.add('flagged');
+                    cell.innerHTML = 'F';
+                } else {
+                    cell.classList.remove('flagged');
+                    cell.innerHTML = '';
+                }
+            });
+            return false;
+        }
+
+        function endGame() {
+            // Display game over message
+            alert('Game Over!');
+
+            // Prevent further interaction with the board
+            var cells = document.querySelectorAll('#mijnveger-grid td');
+            cells.forEach(cell => {
+                cell.onclick = null;
+                cell.oncontextmenu = null;
+            });
+        }
+    </script>
+</head>
+<header>
+    <a href="{{ url_for('index') }}" style="text-decoration: none; color: inherit;">
+        <h1>Mijnveger</h1>
+        <p>Created by Yavuz Akdeniz & Kadir Demirtas</p>
+    </a>
+</header>
+<body>
+    {% if session['message'] %}
+    <p>{{ session['message'] }}</p>
+    {% endif %}
+    {% if session['has_won'] %}
+    <p>Gefeliciteerd, je hebt gewonnen!</p>
+    <p>Time: {{ game.get_elapsed_time() }} seconden</p>
+    <p>Punt: {{ game.get_punten() }}</p>
+    {% endif %}
+    <form method="POST" action="{{ url_for('start') }}">
+        <label for="difficulty">Kies een moeilijkheidsgraad:</label>
+        <select name="difficulty" id="difficulty">
+            <option value="makkelijk">Makkelijk</option>
+            <option value="normal">Normaal</option>
+            <option value="hard">Moeilijk</option>
+        </select>
+        <input type="submit" value="Nieuw Spel">
+        <input type="submit" value="Hint" formaction="{{ url_for('hint') }}">
+    </form>
+    <table id="mijnveger-grid">
+        {% for row in range(game.board.size) %}
+        <tr>
+            {% for col in range(game.board.size) %}
+            <td id="cell-{{ row }}-{{ col }}" class="{{ 'flagged' if game.board.board[row][col].is_flagged else '' }}" onclick="revealCell('{{ row }}', '{{ col }}')" oncontextmenu="flagCell('{{ row }}', '{{ col }}'); return false;">
+                {% if game.board.board[row][col].is_revealed %}
+                    {% if game.board.board[row][col].is_mine %}
+                        M
+                    {% else %}
+                        {{ game.board.board[row][col].adjacent_mines }}
+                    {% endif %}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

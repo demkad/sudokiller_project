@@ -1,0 +1,74 @@
+body {
+    background-color: #0a0a23; /* Dark blue */
+    color: #FFFFFF; /* White */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+    background-color: #1a1a2e; /* Darker blue */
+    color: #FFFFFF; /* White */
+    border-bottom: 3px solid #FF5733; /* Bright orange */
+}
+
+header h1 {
+    text-align: center;
+    padding: 20px 0;
+}
+
+header p {
+    font-size: 0.7em;
+    margin-left: 30px; /* Adjust this value to align with the first letter of the h1 element */
+}
+
+#sudoku-grid {
+    border-collapse: collapse;
+    border: 3px solid #FF5733; /* Bright orange */
+}
+
+#sudoku-grid td {
+    border: 1px solid #FF5733; /* Bright orange */
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background-color: #1a1a2e; /* Darker blue */
+    color: #FFFFFF; /* White */
+}
+
+#sudoku-grid tr:nth-child(3n) td {
+    border-bottom-width: 3px; /* This makes every third row's bottom border thicker */
+}
+
+#sudoku-grid td:nth-child(3n) {
+    border-right-width: 3px; /* This makes every third column's right border thicker */
+}
+
+#sudoku-grid input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #1a1a2e; /* Darker blue */
+    color: #FFFFFF; /* White */
+}
+
+#mijnveger-grid {
+    border-collapse: collapse;
+    background-color: #1a1a2e; /* Darker blue */
+    color: #FFFFFF; /* White */
+}
+
+#mijnveger-grid td {
+    border: 1px solid #FF5733; /* Bright orange */
+    width: 60px;  /* set the width of the cells */
+    height: 60px;  /* set the height of the cells */
+    text-align: center;
+    vertical-align: middle;
+    background-color: #1a1a2e; /* Darker blue */
+    color: #FFFFFF; /* White */
+}
+
+.flagged {
+    background-color: #FF5733; /* Bright orange */
+}
