@@ -7,6 +7,7 @@ from werkzeug.exceptions import abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 import mysql.connector, time
+from flask import jsonify
 
 game = None  # globaal object om de status van het spel mijnveger bij te houden
 db = None # globaal object om de database connectie bij te houden
@@ -201,13 +202,22 @@ def mijnveger():
 def reveal():
     global game
     global db
-    row = int(request.form.get('row'))
-    col = int(request.form.get('col'))
-    result = game.board.reveal_cell(row, col)  # store the output of reveal_cell in result
+    if game is None:
+        game = Minesweeper('makkelijk')
+    data = request.get_json()
+    row = data.get('row')
+    col = data.get('col')
+    if row is not None and col is not None:
+        row = int(row)
+        col = int(col)
+    else:
+        return jsonify(error='Row or column not provided'), 400
+    result = game.board.reveal_cell(row, col)
+    is_mine = result == 'mine'
     if game.board.board[row][col].is_flagged:
         game.board.board[row][col].is_flagged = False
-    if result == 'mine':
-        game = Minesweeper('makkelijk')  # start a new game with 'makkelijk' difficulty
+    if is_mine:
+        game = Minesweeper('makkelijk') # start a new game with 'makkelijk' difficulty
     elif game.board.has_won():  # check if the game has been won after every reveal
         session['has_won'] = True
         mycursor = db.cursor()
@@ -220,16 +230,25 @@ def reveal():
         huidige_datum = datetime.now().strftime('%Y-%m-%d')
         mycursor.execute(f"INSERT INTO `user_data`.`scorebord_data` (`perid`, `game_id`, `moeielijkheidsgraad`, `score`, `tijd`, `datum`) VALUES ('{perid}', '{game_id}', '{difficulty}', '{score}', '{speeltijd}', '{huidige_datum}')")
         db.commit()
-    return redirect(url_for('mijnveger'))
+    adjacent_mines = game.board.board[row][col].adjacent_mines if not is_mine else 0
+    cells_to_reveal = game.board.reveal_adjacent_cells(row, col) if adjacent_mines == 0 else []
+    return jsonify(is_mine=is_mine, adjacent_mines=adjacent_mines, cells_to_reveal=cells_to_reveal)
 
 @app.route('/flag', methods=['POST'])
 def flag():
     global game
-    row = int(request.form.get('row'))
-    col = int(request.form.get('col'))
+    data = request.get_json()
+    row = data.get('row')
+    col = data.get('col')
+    if row is not None and col is not None:
+        row = int(row)
+        col = int(col)
+    else:
+        return jsonify(error='Row or column not provided'), 400
     game.board.flag_cell(row, col)
+    is_flagged = game.board.board[row][col].is_flagged
     session['color_grid'] = True  # set color_grid to True
-    return redirect(url_for('mijnveger'))
+    return jsonify(is_flagged=is_flagged)
 
 @app.route('/hint', methods=['POST'])
 def hint():

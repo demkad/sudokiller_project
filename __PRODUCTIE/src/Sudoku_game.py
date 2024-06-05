@@ -29,11 +29,11 @@ def genereer_sudoku(moeilijkheidsgraad):
         bord[i][i] = nummers[i]
     maak_sudoku(bord)
     if moeilijkheidsgraad == 'makkelijk':
-        leegte = 20
+        leegte = 2
     elif moeilijkheidsgraad == 'normaal':
         leegte = 40
     elif moeilijkheidsgraad == 'moeilijk':
-        leegte = 1
+        leegte = 60
     else:
         print('Ongeldige moeilijkheidsgraad')
         return

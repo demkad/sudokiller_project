@@ -191,7 +191,7 @@ def reveal():
     if game.board.board[row][col].is_flagged:
         game.board.board[row][col].is_flagged = False
     if is_mine:
-        game = Minesweeper('makkelijk')
+        game = Minesweeper('makkelijk') # start a new game with 'makkelijk' difficulty
     elif game.board.has_won():
         session['has_won'] = True
     adjacent_mines = game.board.board[row][col].adjacent_mines if not is_mine else 0

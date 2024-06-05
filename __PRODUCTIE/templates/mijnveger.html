@@ -4,11 +4,60 @@
     <title>Mijnveger</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script>
-        function colorGrid(row, col) {
+        async function revealCell(row, col) {
+            const response = await fetch('/reveal', {
+                method: 'POST',
+                body: JSON.stringify({ row: row, col: col }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
             var cell = document.getElementById('cell-' + row + '-' + col);
-            if (cell.classList.contains('flagged')) {
-                cell.classList.remove('flagged');
+            if (data.is_mine) {
+                // handle mine
+                cell.innerHTML = 'M';
+                endGame();
+            } else {
+                // reveal cell
+                cell.innerHTML = data.adjacent_mines;
+                if (data.adjacent_mines == 0) {
+                    // Use Promise.all to wait for all cells to be revealed
+                    await Promise.all(data.cells_to_reveal.map(cell => revealCell(cell.row, cell.col)));
+                }
             }
+        }
+
+        function flagCell(row, col) {
+            var cell = document.getElementById('cell-' + row + '-' + col);
+            fetch("{{ url_for('flag') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ row: row, col: col }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_flagged) {
+                    cell.classList.add('flagged');
+                    cell.innerHTML = 'F';
+                } else {
+                    cell.classList.remove('flagged');
+                    cell.innerHTML = '';
+                }
+            });
+            return false;
+        }
+
+        function endGame() {
+            // Display game over message
+            alert('Game Over!');
+
+            // Prevent further interaction with the board
+            var cells = document.querySelectorAll('#mijnveger-grid td');
+            cells.forEach(cell => {
+                cell.onclick = null;
+                cell.oncontextmenu = null;
+            });
         }
     </script>
 </head>
@@ -41,24 +90,13 @@
         {% for row in range(game.board.size) %}
         <tr>
             {% for col in range(game.board.size) %}
-            <td id="cell-{{ row }}-{{ col }}" class="{{ 'flagged' if game.board.board[row][col].is_flagged else '' }}">
+            <td id="cell-{{ row }}-{{ col }}" class="{{ 'flagged' if game.board.board[row][col].is_flagged else '' }}" onclick="revealCell('{{ row }}', '{{ col }}')" oncontextmenu="flagCell('{{ row }}', '{{ col }}'); return false;">
                 {% if game.board.board[row][col].is_revealed %}
                     {% if game.board.board[row][col].is_mine %}
                         M
                     {% else %}
                         {{ game.board.board[row][col].adjacent_mines }}
                     {% endif %}
-                {% else %}
-                    <form action="{{ url_for('reveal') }}" method="post">
-                        <input type="hidden" name="row" value="{{ row }}">
-                        <input type="hidden" name="col" value="{{ col }}">
-                        <input type="submit" value="Reveal" onclick="colorGrid('{{ row }}', '{{ col }}')">
-                    </form>
-                    <form action="{{ url_for('flag') }}" method="post">
-                        <input type="hidden" name="row" value="{{ row }}">
-                        <input type="hidden" name="col" value="{{ col }}">
-                        <input type="submit" value="{{ 'Unflag' if game.board.board[row][col].is_flagged else 'Flag' }}" onclick="colorGrid('{{ row }}', '{{ col }}')">
-                    </form>
                 {% endif %}
             </td>
             {% endfor %}
