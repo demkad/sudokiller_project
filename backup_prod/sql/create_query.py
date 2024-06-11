@@ -10,7 +10,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'VAP_nam_
 db = mysql.connector.connect(
     host = 'localhost',
     user ='root',
-    passwd = 'VAP_nam_006',
+    passwd = '',
     database = 'user_data', # Database naam, dit moet u verwijderen als u de database nog niet heeft aangemaakt
     auth_plugin='mysql_native_password'
 )
